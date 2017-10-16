@@ -3,10 +3,11 @@ import {Action} from '@ngrx/store';
 import {StarWarsCharacter} from '../../modules/swapi/entities/star-wars-character.entity';
 
 export const ActionTypes = {
-  SET_ALL_CHARACTERS: type('CONTAINER_LANGUAGE_SET') as 'CONTAINER_LANGUAGE_SET',
+  SET_ALL_CHARACTERS: type('SET_ALL_CHARACTERS') as 'SET_ALL_CHARACTERS',
   REMOVE_CHARACTER: type('REMOVE_CHARACTER') as 'REMOVE_CHARACTER',
   EDIT_CHARACTER: type('EDIT_CHARACTER') as 'EDIT_CHARACTER',
   UPDATE_RATING: type('UPDATE_RATING') as 'UPDATE_RATING',
+  ADD_CHARACTER: type('ADD_CHARACTER') as 'ADD_CHARACTER',
 };
 
 export class SetAllCharacters implements Action {
@@ -37,7 +38,14 @@ export class UpdateRating implements Action {
   }
 }
 
-export type Actions = SetAllCharacters | RemoveCharacter | EditCharacter | UpdateRating;
+export class AddCharacter implements Action {
+  readonly type = ActionTypes.ADD_CHARACTER;
+
+  constructor(public payload: {character}) {
+  }
+}
+
+export type Actions = SetAllCharacters | RemoveCharacter | EditCharacter | UpdateRating | AddCharacter;
 
 
 export function characterReducer(state: Array<StarWarsCharacter> = [], action: Actions) {
@@ -51,6 +59,8 @@ export function characterReducer(state: Array<StarWarsCharacter> = [], action: A
     case ActionTypes.UPDATE_RATING:
       return state.map(character => character.id === action.payload.id ?
         {...character, rating: action.payload.rating} : character);
+    case ActionTypes.ADD_CHARACTER:
+      return [...state, action.payload.character];
     default:
       return state;
   }

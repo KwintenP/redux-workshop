@@ -6,7 +6,7 @@ import {StarWarsCharacter} from '../../entities/star-wars-character.entity';
 @Component({
   selector: 'app-search-character',
   template: `
-    <h3>Search character</h3>
+    <h3>Add character</h3>
     <div>
       <input type="text" [formControl]="nameControl">
       <div class="searchResults">

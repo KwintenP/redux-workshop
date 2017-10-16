@@ -1,4 +1,7 @@
-import {characterReducer, EditCharacter, RemoveCharacter, SetAllCharacters, UpdateRating} from './characters';
+import {
+  AddCharacter, characterReducer, EditCharacter, RemoveCharacter, SetAllCharacters,
+  UpdateRating
+} from './characters';
 import {StarWarsCharacter} from '../../modules/swapi/entities/star-wars-character.entity';
 import * as deepFreeze from 'deep-freeze';
 
@@ -80,6 +83,20 @@ describe('reducer: charactersReducer', () => {
       expect(result.length).toBe(1);
       expect(result[0]).toBe(updatedCharacter);
       expect(result[0].rating).toBe(2);
+    });
+  });
+
+  describe('on ADD_CHARACTER', () => {
+    it('should add a character to the existing list', () => {
+      const luke = {id: '1', name: 'Luke SkyWalker', rating: 5};
+      const initialState = [luke];
+      deepFreeze(initialState);
+
+      const newCharacter = {id: '2', name: 'R2D2', rating: 1};
+      const result = characterReducer(initialState, new AddCharacter({character: newCharacter}));
+
+      expect(result.length).toBe(2);
+      expect(result[1]).toBe(newCharacter);
     });
   });
 });

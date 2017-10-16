@@ -5,6 +5,7 @@ import {Observable} from 'rxjs/Observable';
 import {BehaviorSubject} from 'rxjs/BehaviorSubject';
 import {ReplaySubject} from 'rxjs/ReplaySubject';
 import {Subject} from 'rxjs/Subject';
+import {SwapiSandbox} from '../../sandboxes/swapi.sandbox';
 
 @Component({
   selector: 'app-swapi-overview',
@@ -15,7 +16,7 @@ import {Subject} from 'rxjs/Subject';
         <app-search-character
           [data]="data$ | async"
           (nameChanges)="nameChanged($event)"
-        (itemSelect)="itemSelected($event)"></app-search-character>
+          (itemSelect)="itemSelected($event)"></app-search-character>
         <app-features></app-features>
       </div>
       <div class="content">
@@ -31,7 +32,7 @@ export class SwapiOverviewComponent implements OnInit {
 
   reset$ = new BehaviorSubject<Array<StarWarsCharacter>>([]);
 
-  constructor(private starwarService: StarWarsService) {
+  constructor(private sandbox: SwapiSandbox) {
   }
 
   ngOnInit() {
@@ -39,7 +40,7 @@ export class SwapiOverviewComponent implements OnInit {
       .debounceTime(200)
       .distinctUntilChanged()
       .filter(val => val.length > 1)
-      .switchMap(val => this.starwarService.getCharacters(1, val))
+      .switchMap(val => this.sandbox.getCharacters(1, val))
       .map(data => data.results)
       .merge(this.reset$);
   }
@@ -50,5 +51,7 @@ export class SwapiOverviewComponent implements OnInit {
 
   itemSelected(event) {
     this.reset$.next([]);
+    this.sandbox.addCharacter(event)
+      .subscribe(_ => console.log('done'));
   }
 }
