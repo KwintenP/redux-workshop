@@ -51,5 +51,7 @@ export function characterReducer(state: Array<StarWarsCharacter> = [], action: A
     case ActionTypes.UPDATE_RATING:
       return state.map(character => character.id === action.payload.id ?
         {...character, rating: action.payload.rating} : character);
+    default:
+      return state;
   }
 }
