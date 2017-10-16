@@ -12,6 +12,7 @@ import {CharacterOverviewComponent} from './containers/character-overview/charac
 import {SearchCharacterComponent} from './components/search-character/search-character.component';
 import {StarWarsBackendService} from './services/star-wars-backend.service';
 import {SwapiSandbox} from './sandboxes/swapi.sandbox';
+import { RatingComponent } from './components/rating/rating.component';
 
 @NgModule({
   imports: [
@@ -31,7 +32,9 @@ import {SwapiSandbox} from './sandboxes/swapi.sandbox';
     FeaturesComponent,
     CharacterDetailComponent,
     CharacterOverviewComponent,
-    SearchCharacterComponent]
+    SearchCharacterComponent,
+    RatingComponent
+  ]
 })
 export class SwapiModule {
 }

@@ -5,7 +5,9 @@ import {SwapiSandbox} from '../../sandboxes/swapi.sandbox';
 
 @Component({
   selector: 'app-character-overview',
+  styleUrls: ['./character-overview.component.scss'],
   template: `
+    <h3>Your favourite characters</h3>
     <table class="table">
       <thead>
       <tr>
@@ -21,8 +23,8 @@ import {SwapiSandbox} from '../../sandboxes/swapi.sandbox';
         <th scope="row">{{i}}</th>
         <td>{{character.name}}</td>
         <td>{{character.gender}}</td>
-        <td>{{character.rating}}</td>
-        <td><i class="fa fa-trash-o" aria-hidden="true"></i></td>
+        <td><app-rating [rating]="character.rating" (setRate)="rateUpdated(character, $event)"></app-rating></td>
+        <td><i class="fa fa-trash-o" aria-hidden="true" (click)="removeCharacter(character)"></i></td>
       </tr>
       </tbody>
     </table>`,
@@ -37,7 +39,13 @@ export class CharacterOverviewComponent implements OnInit {
   }
 
   removeCharacter(character) {
-    this.sandbox.removeCharacter(character.id);
+    this.sandbox.removeCharacter(character.id)
+      .subscribe();
+  }
+
+  rateUpdated(character, rating) {
+    this.sandbox.updateRating(character.id, character, rating)
+      .subscribe();
   }
 
   editCharacter() {
