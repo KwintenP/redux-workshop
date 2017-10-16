@@ -41,7 +41,7 @@ export class SwapiSandbox {
 
   editCharacter(id, character) {
     return this.starwarsBackendService.editCharacter(id, character)
-      .map(_ => this.store.dispatch(new EditCharacter({id, character})));
+      .map(updatedCharacter => this.store.dispatch(new EditCharacter({id, character: updatedCharacter})));
   }
 
   updateRating(id, character, rating) {

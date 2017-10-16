@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {FormBuilder} from '@angular/forms';
-import {ActivatedRoute, ActivatedRouteSnapshot} from '@angular/router';
+import {ActivatedRoute, ActivatedRouteSnapshot, Router} from '@angular/router';
 import {SwapiSandbox} from '../../sandboxes/swapi.sandbox';
 
 @Component({
@@ -12,8 +12,12 @@ import {SwapiSandbox} from '../../sandboxes/swapi.sandbox';
         <input type="text" class="form-control" id="name" formControlName="name">
       </div>
       <div class="form-group">
-        <label for="name">Name</label>
-        <input type="text" class="form-control" id="name" formControlName="name">
+        <label for="gender">Gender</label>
+        <input type="text" class="form-control" id="gender" formControlName="gender">
+      </div>
+      <div class="form-group">
+        <label for="gender">Rating</label>
+        <app-rating [rating]="character?.rating" (setRate)="setRating($event)"></app-rating>
       </div>
       <button type="submit" class="btn btn-primary">Submit</button>
     </form>
@@ -22,27 +26,43 @@ import {SwapiSandbox} from '../../sandboxes/swapi.sandbox';
 })
 export class CharacterDetailComponent implements OnInit {
   characterForm;
+  id$;
+  character;
 
   constructor(private formBuilder: FormBuilder,
               private activatedRoute: ActivatedRoute,
-              private sandbox: SwapiSandbox) {
+              private sandbox: SwapiSandbox,
+              private router: Router) {
     this.characterForm = this.formBuilder.group({
       name: '',
       gender: '',
       rating: '',
     });
 
-    this.activatedRoute.params
-      .map(params => params['id'])
+    this.id$ = this.activatedRoute.params
+      .map(params => params['id']);
+
+    this.id$
       .switchMap(id => sandbox.getCharacter(id))
-      .subscribe(console.log);
+      .subscribe(character => {
+        this.character = character;
+        this.characterForm.patchValue(character);
+      });
   }
 
   ngOnInit() {
   }
 
   saveCharacter() {
-    this.sandbox.editCharacter()
+    console.log('triggered');
+    this.id$
+      .take(1)
+      .mergeMap(id => this.sandbox.editCharacter(id, this.characterForm.value))
+      .subscribe(_ => this.router.navigate(['swapi', 'overview']));
   }
 
+  setRating(rating) {
+    this.character = {...this.character, rating}
+    this.characterForm.patchValue({rating});
+  }
 }

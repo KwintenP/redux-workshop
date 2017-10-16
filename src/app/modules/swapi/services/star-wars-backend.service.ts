@@ -14,7 +14,8 @@ export class StarWarsBackendService {
   }
 
   deleteCharacter(id) {
-    return this.http.delete(`http://localhost:8080/starwarscharacters/${id}`);
+    return this.http.delete(`http://localhost:8080/starwarscharacters/${id}`)
+      .map(response => response.json());
   }
 
   getCharacter(id) {
@@ -23,10 +24,8 @@ export class StarWarsBackendService {
   }
 
   editCharacter(id, character) {
-    const body = JSON.stringify({ 'foo': 'bar' });
-    const headers = new Headers({ 'Content-Type': 'application/json' });
-    const options = new RequestOptions({ headers: headers });
-    return this.http.put(`http://localhost:8080/starwarscharacters/${id}`, character, options);
+    return this.http.put(`http://localhost:8080/starwarscharacters/${id}`, character)
+      .map(response => response.json());
   }
 
   addCharacter(character) {
