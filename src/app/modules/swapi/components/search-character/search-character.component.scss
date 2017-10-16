@@ -1,0 +1,33 @@
+:host {
+  display: flex;
+  flex-direction: column;
+  min-width: 250px;
+  background-color: lightblue;
+  margin: 0 15px 0 0;
+  padding: 10px 10px;
+  height: 100%;
+  cursor: pointer;
+}
+
+input[type='text'] {
+  border-radius: 10px;
+  border: none;
+  padding: 10px;
+  outline: none;
+}
+
+.searchResults {
+  position: absolute;
+  background-color: white;
+
+  ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+
+    li {
+      padding: 5px 5px;
+      border: 1px solid grey;
+    }
+  }
+}

@@ -1,5 +1,7 @@
 export type StarWarsCharacter = Readonly<Partial<{
-  readonly name: string;
-  readonly birth_year: string;
-  readonly gender: string;
+  id: string;
+  name: string;
+  birth_year: string;
+  gender: string;
+  rating: number;
 }>>;

@@ -12,7 +12,10 @@ import {Subject} from 'rxjs/Subject';
     <app-topbar></app-topbar>
     <div class="main">
       <div class="sidebar">
-        <app-search-character (nameChanges)=""></app-search-character>
+        <app-search-character
+          [data]="data$ | async"
+          (nameChanges)="nameChanged($event)"
+        (itemSelect)="itemSelected($event)"></app-search-character>
         <app-features></app-features>
       </div>
       <div class="content">
@@ -23,20 +26,29 @@ import {Subject} from 'rxjs/Subject';
   styleUrls: ['./swapi-overview.component.scss']
 })
 export class SwapiOverviewComponent implements OnInit {
+  name$ = new Subject<string>();
+  data$;
 
+  reset$ = new BehaviorSubject<Array<StarWarsCharacter>>([]);
 
   constructor(private starwarService: StarWarsService) {
   }
 
   ngOnInit() {
+    this.data$ = this.name$
+      .debounceTime(200)
+      .distinctUntilChanged()
+      .filter(val => val.length > 1)
+      .switchMap(val => this.starwarService.getCharacters(1, val))
+      .map(data => data.results)
+      .merge(this.reset$);
   }
 
-  searchClicked(searchTerm) {
+  nameChanged(event) {
+    this.name$.next(event);
   }
 
-  filterChanged(val) {
-  }
-
-  pageChanged(page) {
+  itemSelected(event) {
+    this.reset$.next([]);
   }
 }

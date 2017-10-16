@@ -3,7 +3,10 @@ import { Component, OnInit } from '@angular/core';
 @Component({
   selector: 'app-features',
   template: `
-    <div>
+    <div class="content">
+      <h3>
+        Features
+      </h3>
       <ul>
         <li>Server side filtering</li>
         <li>Cancelling of requests</li>
