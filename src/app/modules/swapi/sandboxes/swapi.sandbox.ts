@@ -28,6 +28,10 @@ export class SwapiSandbox {
       .subscribe((characters) => this.store.dispatch(new SetAllCharacters({characters})));
   }
 
+  getCharacter(id) {
+    return this.starwarsBackendService.getCharacter(id);
+  }
+
   addCharacter(character) {
     // set default rating to 1
     character.rating = 1;

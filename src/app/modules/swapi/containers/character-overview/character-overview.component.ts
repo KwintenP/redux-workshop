@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {ApplicationState} from '../../../../statemanagement/root-reducer';
 import {Store} from '@ngrx/store';
 import {SwapiSandbox} from '../../sandboxes/swapi.sandbox';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-character-overview',
@@ -23,8 +24,13 @@ import {SwapiSandbox} from '../../sandboxes/swapi.sandbox';
         <th scope="row">{{i}}</th>
         <td>{{character.name}}</td>
         <td>{{character.gender}}</td>
-        <td><app-rating [rating]="character.rating" (setRate)="rateUpdated(character, $event)"></app-rating></td>
-        <td><i class="fa fa-trash-o" aria-hidden="true" (click)="removeCharacter(character)"></i></td>
+        <td>
+          <app-rating [rating]="character.rating" (setRate)="rateUpdated(character, $event)"></app-rating>
+        </td>
+        <td>
+          <i class="fa fa-trash-o" aria-hidden="true" (click)="removeCharacter(character)"></i>
+          <i class="fa fa-pencil" aria-hidden="true" (click)="editCharacter(character)"></i>
+        </td>
       </tr>
       </tbody>
     </table>`,
@@ -32,7 +38,8 @@ import {SwapiSandbox} from '../../sandboxes/swapi.sandbox';
 export class CharacterOverviewComponent implements OnInit {
   characters$ = this.sandbox.characters$;
 
-  constructor(private sandbox: SwapiSandbox) {
+  constructor(private sandbox: SwapiSandbox,
+              private router: Router) {
   }
 
   ngOnInit() {
@@ -48,7 +55,7 @@ export class CharacterOverviewComponent implements OnInit {
       .subscribe();
   }
 
-  editCharacter() {
-    //route
+  editCharacter(character) {
+    this.router.navigate(['swapi', 'detail', character.id]);
   }
 }

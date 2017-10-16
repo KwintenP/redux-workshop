@@ -13,7 +13,7 @@ export const routes: Routes = [
     children: [
       {path: '', redirectTo: 'overview', pathMatch: 'full'},
       {path: 'overview', pathMatch: 'full', component: CharacterOverviewComponent},
-      {path: 'detail', pathMatch: 'full', component: CharacterDetailComponent}
+      {path: 'detail/:id', pathMatch: 'full', component: CharacterDetailComponent}
     ]
   }
 ];
