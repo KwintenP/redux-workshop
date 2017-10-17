@@ -8,6 +8,7 @@ import {
 } from '../../../statemanagement/data/characters';
 import {StarWarsService} from '../services/star-wars.service';
 import {LoadingDone, SetLoading} from '../../../statemanagement/ui/loading';
+import {ResetStore} from '../../../statemanagement/metareducers/reset.reducer';
 
 @Injectable()
 export class SwapiSandbox {
@@ -62,5 +63,10 @@ export class SwapiSandbox {
 
   loadingDone() {
     this.store.dispatch(new LoadingDone());
+  }
+
+  loadData() {
+    this.store.dispatch(new ResetStore());
+    this.getAllCharacters();
   }
 }

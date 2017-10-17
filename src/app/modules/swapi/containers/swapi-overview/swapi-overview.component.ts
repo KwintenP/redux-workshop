@@ -11,7 +11,7 @@ import {success, error} from 'toastr';
 @Component({
   selector: 'app-swapi-overview',
   template: `
-    <app-topbar></app-topbar>
+    <app-topbar (reload)="loadData()"></app-topbar>
     <div class="main">
       <div class="sidebar">
         <app-search-character
@@ -60,5 +60,9 @@ export class SwapiOverviewComponent implements OnInit {
     this.sandbox.addCharacter(event)
       .catch(_ => error('character adding failed'))
       .subscribe(_ => success('character added'));
+  }
+
+  loadData() {
+    this.sandbox.loadData();
   }
 }

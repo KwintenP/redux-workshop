@@ -4,6 +4,7 @@ import {characterReducer} from './data/characters';
 import {environment} from '../../environments/environment';
 import {storeFreeze} from 'ngrx-store-freeze';
 import {loadingReducer} from './ui/loading';
+import {reset} from './metareducers/reset.reducer';
 
 export type ApplicationState = Readonly<{
   characters: Array<StarWarsCharacter>;
@@ -15,4 +16,4 @@ export const rootReducer: ActionReducerMap<ApplicationState> = {
   loading: loadingReducer,
 };
 
-export const metaReducers: MetaReducer<ApplicationState>[] = environment.production ? [] : [storeFreeze];
+export const metaReducers: MetaReducer<ApplicationState>[] = environment.production ? [reset] : [storeFreeze, reset];
