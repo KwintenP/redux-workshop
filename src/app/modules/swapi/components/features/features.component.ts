@@ -14,6 +14,7 @@ import { Component, OnInit } from '@angular/core';
         <li>Store integration</li>
         <li>Selecting from the store</li>
         <li>Updating the store</li>
+        <li>Meta reducers</li>
         <li>Proper angular architecture</li>
       </ul>
     </div>
