@@ -7,10 +7,12 @@ import {
   UpdateRating
 } from '../../../statemanagement/data/characters';
 import {StarWarsService} from '../services/star-wars.service';
+import {LoadingDone, SetLoading} from '../../../statemanagement/ui/loading';
 
 @Injectable()
 export class SwapiSandbox {
   characters$ = this.store.select((state: ApplicationState) => state.characters);
+  loading$ = this.store.select((state: ApplicationState) => state.loading);
 
   constructor(
     private store: Store<ApplicationState>,
@@ -52,5 +54,13 @@ export class SwapiSandbox {
   removeCharacter(id) {
     return this.starwarsBackendService.deleteCharacter(id)
       .map(_ => this.store.dispatch(new RemoveCharacter({id})));
+  }
+
+  setLoading() {
+    this.store.dispatch(new SetLoading());
+  }
+
+  loadingDone() {
+    this.store.dispatch(new LoadingDone());
   }
 }

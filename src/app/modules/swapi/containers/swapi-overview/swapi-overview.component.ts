@@ -16,6 +16,7 @@ import {success, error} from 'toastr';
       <div class="sidebar">
         <app-search-character
           [data]="data$ | async"
+          [spinnerVisible]="loading$ | async"
           (nameChanges)="nameChanged($event)"
           (itemSelect)="itemSelected($event)"></app-search-character>
         <app-features></app-features>
@@ -28,6 +29,7 @@ import {success, error} from 'toastr';
   styleUrls: ['./swapi-overview.component.scss']
 })
 export class SwapiOverviewComponent implements OnInit {
+  loading$ = this.sandbox.loading$;
   name$ = new Subject<string>();
   data$;
 
@@ -41,7 +43,9 @@ export class SwapiOverviewComponent implements OnInit {
       .debounceTime(200)
       .distinctUntilChanged()
       .filter(val => val.length > 1)
+      .do(_ => this.sandbox.setLoading())
       .switchMap(val => this.sandbox.getCharacters(1, val))
+      .do(_ => this.sandbox.loadingDone())
       .map(data => data.results)
       .merge(this.reset$);
   }
