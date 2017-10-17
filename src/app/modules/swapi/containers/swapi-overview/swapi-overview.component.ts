@@ -6,6 +6,7 @@ import {BehaviorSubject} from 'rxjs/BehaviorSubject';
 import {ReplaySubject} from 'rxjs/ReplaySubject';
 import {Subject} from 'rxjs/Subject';
 import {SwapiSandbox} from '../../sandboxes/swapi.sandbox';
+import {success, error} from 'toastr';
 
 @Component({
   selector: 'app-swapi-overview',
@@ -46,12 +47,14 @@ export class SwapiOverviewComponent implements OnInit {
   }
 
   nameChanged(event) {
+    this.reset$.next([]);
     this.name$.next(event);
   }
 
   itemSelected(event) {
     this.reset$.next([]);
     this.sandbox.addCharacter(event)
-      .subscribe(_ => console.log('done'));
+      .catch(_ => error('character adding failed'))
+      .subscribe(_ => success('character added'));
   }
 }

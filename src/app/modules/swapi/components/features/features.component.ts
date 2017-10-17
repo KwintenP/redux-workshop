@@ -8,7 +8,13 @@ import { Component, OnInit } from '@angular/core';
         Features
       </h3>
       <ul>
-        <li>Server side filtering</li>
+        <li>Autocomplete</li>
+        <li>Reducers test</li>
+        <li>Reducers</li>
+        <li>Store integration</li>
+        <li>Selecting from the store</li>
+        <li>Updating the store</li>
+        <li>Proper angular architecture</li>
       </ul>
     </div>
   `,

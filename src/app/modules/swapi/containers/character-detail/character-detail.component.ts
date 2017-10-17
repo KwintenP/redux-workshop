@@ -1,7 +1,8 @@
 import {Component, OnInit} from '@angular/core';
 import {FormBuilder} from '@angular/forms';
-import {ActivatedRoute, ActivatedRouteSnapshot, Router} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import {SwapiSandbox} from '../../sandboxes/swapi.sandbox';
+import {error, success} from 'toastr';
 
 @Component({
   selector: 'app-character-detail',
@@ -13,7 +14,11 @@ import {SwapiSandbox} from '../../sandboxes/swapi.sandbox';
       </div>
       <div class="form-group">
         <label for="gender">Gender</label>
-        <input type="text" class="form-control" id="gender" formControlName="gender">
+        <select class="form-control" id="gender" formControlName="gender">
+          <option>male</option>
+          <option>female</option>
+          <option>n/a</option>
+        </select>
       </div>
       <div class="form-group">
         <label for="gender">Rating</label>
@@ -58,7 +63,11 @@ export class CharacterDetailComponent implements OnInit {
     this.id$
       .take(1)
       .mergeMap(id => this.sandbox.editCharacter(id, this.characterForm.value))
-      .subscribe(_ => this.router.navigate(['swapi', 'overview']));
+      .catch(_ => error('updating the character failed'))
+      .subscribe(_ => {
+        success('Updated succesfully');
+        this.router.navigate(['swapi', 'overview']);
+      });
   }
 
   setRating(rating) {

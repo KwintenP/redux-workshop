@@ -3,6 +3,7 @@ import {ApplicationState} from '../../../../statemanagement/root-reducer';
 import {Store} from '@ngrx/store';
 import {SwapiSandbox} from '../../sandboxes/swapi.sandbox';
 import {Router} from '@angular/router';
+import {success, error} from 'toastr';
 
 @Component({
   selector: 'app-character-overview',
@@ -47,12 +48,14 @@ export class CharacterOverviewComponent implements OnInit {
 
   removeCharacter(character) {
     this.sandbox.removeCharacter(character.id)
-      .subscribe();
+      .catch(_ => error('removing character failed'))
+      .subscribe(_ => success('character removed'));
   }
 
   rateUpdated(character, rating) {
     this.sandbox.updateRating(character.id, character, rating)
-      .subscribe();
+      .catch(_ => error('rate update failed'))
+      .subscribe(_ => success('rate updated successfully'));
   }
 
   editCharacter(character) {
