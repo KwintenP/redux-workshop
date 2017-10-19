@@ -31,11 +31,9 @@ import {LoadingDone, SetLoading} from '../../../../statemanagement/ui/loading';
   styleUrls: ['./swapi-overview.component.scss']
 })
 export class SwapiOverviewComponent implements OnInit {
-  loading$; //TODO select data from the store
+  loading$; // TODO select data from the store
   name$ = new Subject<string>();
   data$;
-
-  reset$ = new BehaviorSubject<Array<StarWarsCharacter>>([]);
 
   constructor(private store: Store<ApplicationState>,
               private starwarsService: StarWarsService,
@@ -43,6 +41,10 @@ export class SwapiOverviewComponent implements OnInit {
   }
 
   ngOnInit() {
+    // TODO: (1) Listen to the name$
+    // debounce it for 200ms
+    // filter out the same values, filter out values with length shorter than 2
+    // fetch data and get the results
     this.data$ = this.name$
       .debounceTime(200)
       .distinctUntilChanged()
@@ -50,17 +52,17 @@ export class SwapiOverviewComponent implements OnInit {
       // TODO: add loading icon
       .switchMap(val => this.starwarsService.getCharacters(1, val))
       // TODO: remove loading icon
-      .map(data => data.results)
-      .merge(this.reset$);
+      .map(data => data.results);
+
+    // TODO: (2)
+    // When the data changes or an item is selected reset the data;
   }
 
   nameChanged(event) {
-    this.reset$.next([]);
     this.name$.next(event);
   }
 
   itemSelected(event) {
-    this.reset$.next([]);
     event.rating = 1;
     this.starwarsBackendService.addCharacter(event);
     // TODO: make the call and add the result to the store
