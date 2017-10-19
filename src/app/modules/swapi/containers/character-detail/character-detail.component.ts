@@ -63,16 +63,9 @@ export class CharacterDetailComponent implements OnInit {
   }
 
   saveCharacter() {
-    this.id$
-      .take(1)
-      .mergeMap(id => this.starWarsBackendService.editCharacter(id, this.characterForm.value))
-      .withLatestFrom(this.id$)
-      .map(([updatedCharacter, id]) => this.store.dispatch(new EditCharacter({id, character: updatedCharacter})))
-      .catch(_ => error('updating the character failed'))
-      .subscribe(_ => {
-        success('Updated succesfully');
-        this.router.navigate(['swapi', 'overview']);
-      });
+    // TODO: use the id$ to fetch save the character, put the updated data in the store
+    // show a toastr on success, one on failure
+    // route to the overview page on success
   }
 
   setRating(rating) {

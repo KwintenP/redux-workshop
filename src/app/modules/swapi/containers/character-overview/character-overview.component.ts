@@ -57,17 +57,11 @@ export class CharacterOverviewComponent implements OnInit {
   }
 
   removeCharacter(character) {
-    return this.starWarsBackendService.deleteCharacter(character.id)
-      .map(_ => this.store.dispatch(new RemoveCharacter({id: character.id})))
-      .catch(_ => error('removing character failed'))
-      .subscribe(_ => success('character removed'));
+    // TODO: delete the character and update the store. show toastr on success and error
   }
-  
+
   rateUpdated(character, rating) {
-    this.starWarsBackendService.editCharacter(character.id, {...character, rating})
-      .map(_ => this.store.dispatch(new UpdateRating({id: character.id, rating})))
-      .catch(_ => error('rate update failed'))
-      .subscribe(_ => success('rate updated successfully'));
+    // TODO: update the character and update the store. show toastr on success and error
   }
 
   editCharacter(character) {
@@ -75,6 +69,6 @@ export class CharacterOverviewComponent implements OnInit {
   }
 
   sortingRequested(columnName) {
-    this.store.dispatch(new SetSorting({columnName}));
+    // TODO: update the sorting in the store
   }
 }

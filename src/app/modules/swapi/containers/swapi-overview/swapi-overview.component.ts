@@ -47,9 +47,9 @@ export class SwapiOverviewComponent implements OnInit {
       .debounceTime(200)
       .distinctUntilChanged()
       .filter(val => val.length > 1)
-      .do(_ => this.store.dispatch(new SetLoading()))
+      // TODO: add loading icon
       .switchMap(val => this.starwarsService.getCharacters(1, val))
-      .do(_ => this.store.dispatch(new LoadingDone()))
+      // TODO: remove loading icon
       .map(data => data.results)
       .merge(this.reset$);
   }
@@ -62,16 +62,13 @@ export class SwapiOverviewComponent implements OnInit {
   itemSelected(event) {
     this.reset$.next([]);
     event.rating = 1;
-    this.starwarsBackendService.addCharacter(event)
-      .map(result => this.store.dispatch(new AddCharacter({character: result})))
-      .catch(_ => error('character adding failed'))
-      .subscribe((val) => {
-        success('character added');
-      });
+    this.starwarsBackendService.addCharacter(event);
+    // TODO: make the call and add the result to the store
+    // show a toastr in case of success and one in case of error
   }
 
   loadData() {
-    this.starwarsBackendService.getAllCharacters()
-      .subscribe((characters) => this.store.dispatch(new SetAllCharacters({characters})));
+    this.starwarsBackendService.getAllCharacters();
+    // TODO: listen to the stream and update the store
   }
 }

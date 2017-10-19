@@ -16,6 +16,6 @@ export class AppComponent {
               private starwarsBackendService: StarWarsBackendService) {
     // Load all data at startup
     this.starwarsBackendService.getAllCharacters()
-      .subscribe((characters) => this.store.dispatch(new SetAllCharacters({characters})));
+    // TODO: put into the store
   }
 }
