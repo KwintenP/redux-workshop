@@ -9,7 +9,6 @@ import {Store} from '@ngrx/store';
 import {AddCharacter, SetAllCharacters} from '../../../../statemanagement/data/characters';
 import {StarWarsBackendService} from '../../services/star-wars-backend.service';
 import {LoadingDone, SetLoading} from '../../../../statemanagement/ui/loading';
-import {ResetStore} from "../../../../statemanagement/metareducers/reset.reducer";
 
 @Component({
   selector: 'app-swapi-overview',
@@ -72,7 +71,6 @@ export class SwapiOverviewComponent implements OnInit {
   }
 
   loadData() {
-    this.store.dispatch(new ResetStore());
     this.starwarsBackendService.getAllCharacters()
       .subscribe((characters) => this.store.dispatch(new SetAllCharacters({characters})));
   }
