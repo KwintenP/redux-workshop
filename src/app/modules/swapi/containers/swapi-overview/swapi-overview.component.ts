@@ -59,7 +59,9 @@ export class SwapiOverviewComponent implements OnInit {
     this.reset$.next([]);
     this.sandbox.addCharacter(event)
       .catch(_ => error('character adding failed'))
-      .subscribe(_ => success('character added'));
+      .subscribe((val) => {
+        success('character added');
+      });
   }
 
   loadData() {

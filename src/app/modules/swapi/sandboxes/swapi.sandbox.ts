@@ -9,11 +9,13 @@ import {
 import {StarWarsService} from '../services/star-wars.service';
 import {LoadingDone, SetLoading} from '../../../statemanagement/ui/loading';
 import {ResetStore} from '../../../statemanagement/metareducers/reset.reducer';
+import {SetSorting} from '../../../statemanagement/ui/overview-sorting';
 
 @Injectable()
 export class SwapiSandbox {
-  characters$ = this.store.select((state: ApplicationState) => state.characters);
-  loading$ = this.store.select((state: ApplicationState) => state.loading);
+  characters$ = this.store.select((state: ApplicationState) => state.data.characters);
+  loading$ = this.store.select((state: ApplicationState) => state.ui.loading);
+  overviewSorting$ = this.store.select((state: ApplicationState) => state.ui.overviewSorting);
 
   constructor(
     private store: Store<ApplicationState>,
@@ -68,5 +70,9 @@ export class SwapiSandbox {
   loadData() {
     this.store.dispatch(new ResetStore());
     this.getAllCharacters();
+  }
+
+  sortingRequested(columnName) {
+    this.store.dispatch(new SetSorting({columnName}));
   }
 }

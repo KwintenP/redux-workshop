@@ -1,9 +1,8 @@
 import {Component, OnInit} from '@angular/core';
-import {ApplicationState} from '../../../../statemanagement/root-reducer';
-import {Store} from '@ngrx/store';
 import {SwapiSandbox} from '../../sandboxes/swapi.sandbox';
 import {Router} from '@angular/router';
-import {success, error} from 'toastr';
+import {error, success} from 'toastr';
+import {orderBy} from 'lodash-es';
 
 @Component({
   selector: 'app-character-overview',
@@ -14,14 +13,14 @@ import {success, error} from 'toastr';
       <thead>
       <tr>
         <th>#</th>
-        <th>Name</th>
-        <th>Gender</th>
-        <th>Rating</th>
+        <th (click)="sortingRequested('name')">Name <i class="fa fa-sort" aria-hidden="true"></i></th>
+        <th (click)="sortingRequested('gender')">Gender <i class="fa fa-sort" aria-hidden="true"></i></th>
+        <th (click)="sortingRequested('rating')">Rating <i class="fa fa-sort" aria-hidden="true"></i></th>
         <th>Actions</th>
       </tr>
       </thead>
       <tbody>
-      <tr *ngFor="let character of characters$ | async; let i = index;">
+      <tr *ngFor="let character of sortedCharacters$ | async; let i = index;">
         <th scope="row">{{i}}</th>
         <td>{{character.name}}</td>
         <td>{{character.gender}}</td>
@@ -37,13 +36,19 @@ import {success, error} from 'toastr';
     </table>`,
 })
 export class CharacterOverviewComponent implements OnInit {
-  characters$ = this.sandbox.characters$;
+  sortedCharacters$;
 
   constructor(private sandbox: SwapiSandbox,
               private router: Router) {
   }
 
   ngOnInit() {
+    const sortCharacters = (characters, sorting) => sorting && sorting.columnName ?
+      orderBy(characters, [sorting.columnName], [sorting.direction.toLowerCase()]) :
+      characters;
+
+    this.sortedCharacters$ = this.sandbox.characters$
+      .combineLatest(this.sandbox.overviewSorting$, sortCharacters);
   }
 
   removeCharacter(character) {
@@ -60,5 +65,9 @@ export class CharacterOverviewComponent implements OnInit {
 
   editCharacter(character) {
     this.router.navigate(['swapi', 'detail', character.id]);
+  }
+
+  sortingRequested(columName) {
+    this.sandbox.sortingRequested(columName);
   }
 }
