@@ -1,12 +1,15 @@
 import {Component, OnInit} from '@angular/core';
 import {StarWarsService} from '../../services/star-wars.service';
 import {StarWarsCharacter} from '../../entities/star-wars-character.entity';
-import {Observable} from 'rxjs/Observable';
 import {BehaviorSubject} from 'rxjs/BehaviorSubject';
-import {ReplaySubject} from 'rxjs/ReplaySubject';
 import {Subject} from 'rxjs/Subject';
-import {SwapiSandbox} from '../../sandboxes/swapi.sandbox';
-import {success, error} from 'toastr';
+import {error, success} from 'toastr';
+import {ApplicationState} from '../../../../statemanagement/root-reducer';
+import {Store} from '@ngrx/store';
+import {AddCharacter, SetAllCharacters} from '../../../../statemanagement/data/characters';
+import {StarWarsBackendService} from '../../services/star-wars-backend.service';
+import {LoadingDone, SetLoading} from '../../../../statemanagement/ui/loading';
+import {ResetStore} from "../../../../statemanagement/metareducers/reset.reducer";
 
 @Component({
   selector: 'app-swapi-overview',
@@ -29,13 +32,15 @@ import {success, error} from 'toastr';
   styleUrls: ['./swapi-overview.component.scss']
 })
 export class SwapiOverviewComponent implements OnInit {
-  loading$ = this.sandbox.loading$;
+  loading$ = this.store.select(state => state.ui.loading);
   name$ = new Subject<string>();
   data$;
 
   reset$ = new BehaviorSubject<Array<StarWarsCharacter>>([]);
 
-  constructor(private sandbox: SwapiSandbox) {
+  constructor(private store: Store<ApplicationState>,
+              private starwarsService: StarWarsService,
+              private starwarsBackendService: StarWarsBackendService) {
   }
 
   ngOnInit() {
@@ -43,9 +48,9 @@ export class SwapiOverviewComponent implements OnInit {
       .debounceTime(200)
       .distinctUntilChanged()
       .filter(val => val.length > 1)
-      .do(_ => this.sandbox.setLoading())
-      .switchMap(val => this.sandbox.getCharacters(1, val))
-      .do(_ => this.sandbox.loadingDone())
+      .do(_ => this.store.dispatch(new SetLoading()))
+      .switchMap(val => this.starwarsService.getCharacters(1, val))
+      .do(_ => this.store.dispatch(new LoadingDone()))
       .map(data => data.results)
       .merge(this.reset$);
   }
@@ -57,7 +62,9 @@ export class SwapiOverviewComponent implements OnInit {
 
   itemSelected(event) {
     this.reset$.next([]);
-    this.sandbox.addCharacter(event)
+    event.rating = 1;
+    this.starwarsBackendService.addCharacter(event)
+      .map(result => this.store.dispatch(new AddCharacter({character: result})))
       .catch(_ => error('character adding failed'))
       .subscribe((val) => {
         success('character added');
@@ -65,6 +72,8 @@ export class SwapiOverviewComponent implements OnInit {
   }
 
   loadData() {
-    this.sandbox.loadData();
+    this.store.dispatch(new ResetStore());
+    this.starwarsBackendService.getAllCharacters()
+      .subscribe((characters) => this.store.dispatch(new SetAllCharacters({characters})));
   }
 }

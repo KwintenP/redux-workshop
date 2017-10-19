@@ -1,8 +1,12 @@
 import {Component, OnInit} from '@angular/core';
-import {SwapiSandbox} from '../../sandboxes/swapi.sandbox';
 import {Router} from '@angular/router';
 import {error, success} from 'toastr';
 import {orderBy} from 'lodash-es';
+import {ApplicationState} from '../../../../statemanagement/root-reducer';
+import {Store} from '@ngrx/store';
+import {StarWarsBackendService} from '../../services/star-wars-backend.service';
+import {RemoveCharacter, UpdateRating} from '../../../../statemanagement/data/characters';
+import {SetSorting} from '../../../../statemanagement/ui/overview-sorting';
 
 @Component({
   selector: 'app-character-overview',
@@ -38,7 +42,8 @@ import {orderBy} from 'lodash-es';
 export class CharacterOverviewComponent implements OnInit {
   sortedCharacters$;
 
-  constructor(private sandbox: SwapiSandbox,
+  constructor(private store: Store<ApplicationState>,
+              private starWarsBackendService: StarWarsBackendService,
               private router: Router) {
   }
 
@@ -47,18 +52,20 @@ export class CharacterOverviewComponent implements OnInit {
       orderBy(characters, [sorting.columnName], [sorting.direction.toLowerCase()]) :
       characters;
 
-    this.sortedCharacters$ = this.sandbox.characters$
-      .combineLatest(this.sandbox.overviewSorting$, sortCharacters);
+    this.sortedCharacters$ = this.store.select(state => state.data.characters)
+      .combineLatest(this.store.select(state => state.ui.overviewSorting), sortCharacters);
   }
 
   removeCharacter(character) {
-    this.sandbox.removeCharacter(character.id)
+    return this.starWarsBackendService.deleteCharacter(character.id)
+      .map(_ => this.store.dispatch(new RemoveCharacter({id: character.id})))
       .catch(_ => error('removing character failed'))
       .subscribe(_ => success('character removed'));
   }
-
+  
   rateUpdated(character, rating) {
-    this.sandbox.updateRating(character.id, character, rating)
+    this.starWarsBackendService.editCharacter(character.id, {...character, rating})
+      .map(_ => this.store.dispatch(new UpdateRating({id: character.id, rating})))
       .catch(_ => error('rate update failed'))
       .subscribe(_ => success('rate updated successfully'));
   }
@@ -67,7 +74,7 @@ export class CharacterOverviewComponent implements OnInit {
     this.router.navigate(['swapi', 'detail', character.id]);
   }
 
-  sortingRequested(columName) {
-    this.sandbox.sortingRequested(columName);
+  sortingRequested(columnName) {
+    this.store.dispatch(new SetSorting({columnName}));
   }
 }

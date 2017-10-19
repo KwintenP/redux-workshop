@@ -11,8 +11,7 @@ import {CharacterDetailComponent} from './containers/character-detail/character-
 import {CharacterOverviewComponent} from './containers/character-overview/character-overview.component';
 import {SearchCharacterComponent} from './components/search-character/search-character.component';
 import {StarWarsBackendService} from './services/star-wars-backend.service';
-import {SwapiSandbox} from './sandboxes/swapi.sandbox';
-import { RatingComponent } from './components/rating/rating.component';
+import {RatingComponent} from './components/rating/rating.component';
 
 @NgModule({
   imports: [
@@ -24,7 +23,6 @@ import { RatingComponent } from './components/rating/rating.component';
   providers: [
     StarWarsService,
     StarWarsBackendService,
-    SwapiSandbox
   ],
   declarations: [
     SwapiOverviewComponent,

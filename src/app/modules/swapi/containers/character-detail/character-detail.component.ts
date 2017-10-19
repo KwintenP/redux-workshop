@@ -1,8 +1,11 @@
 import {Component, OnInit} from '@angular/core';
 import {FormBuilder} from '@angular/forms';
 import {ActivatedRoute, Router} from '@angular/router';
-import {SwapiSandbox} from '../../sandboxes/swapi.sandbox';
 import {error, success} from 'toastr';
+import {StarWarsBackendService} from '../../services/star-wars-backend.service';
+import {EditCharacter} from '../../../../statemanagement/data/characters';
+import {ApplicationState} from '../../../../statemanagement/root-reducer';
+import {Store} from '@ngrx/store';
 
 @Component({
   selector: 'app-character-detail',
@@ -36,8 +39,9 @@ export class CharacterDetailComponent implements OnInit {
 
   constructor(private formBuilder: FormBuilder,
               private activatedRoute: ActivatedRoute,
-              private sandbox: SwapiSandbox,
-              private router: Router) {
+              private starWarsBackendService: StarWarsBackendService,
+              private router: Router,
+              private store: Store<ApplicationState>) {
     this.characterForm = this.formBuilder.group({
       name: '',
       gender: '',
@@ -48,7 +52,7 @@ export class CharacterDetailComponent implements OnInit {
       .map(params => params['id']);
 
     this.id$
-      .switchMap(id => sandbox.getCharacter(id))
+      .switchMap(id => this.starWarsBackendService.getCharacter(id))
       .subscribe(character => {
         this.character = character;
         this.characterForm.patchValue(character);
@@ -59,10 +63,11 @@ export class CharacterDetailComponent implements OnInit {
   }
 
   saveCharacter() {
-    console.log('triggered');
     this.id$
       .take(1)
-      .mergeMap(id => this.sandbox.editCharacter(id, this.characterForm.value))
+      .mergeMap(id => this.starWarsBackendService.editCharacter(id, this.characterForm.value))
+      .withLatestFrom(this.id$)
+      .map(([updatedCharacter, id]) => this.store.dispatch(new EditCharacter({id, character: updatedCharacter})))
       .catch(_ => error('updating the character failed'))
       .subscribe(_ => {
         success('Updated succesfully');

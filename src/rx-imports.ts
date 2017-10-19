@@ -7,6 +7,7 @@ import 'rxjs/add/operator/shareReplay';
 import 'rxjs/add/operator/distinctUntilChanged';
 import 'rxjs/add/operator/filter';
 import 'rxjs/add/operator/catch';
+import 'rxjs/add/operator/withLatestFrom';
 import 'rxjs/add/operator/merge';
 import 'rxjs/add/operator/mergeMap';
 
