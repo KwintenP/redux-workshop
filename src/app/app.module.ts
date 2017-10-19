@@ -5,8 +5,8 @@ import { AppComponent } from './app.component';
 import {RouterModule} from '@angular/router';
 import {routes} from './app.routes';
 import {SwapiModule} from './modules/swapi/swapi.module';
-import {StoreModule} from '@ngrx/store';
-import {metaReducers, rootReducer} from './statemanagement/root-reducer';
+import {META_REDUCERS, StoreModule} from '@ngrx/store';
+import {reducerProvider, reducerToken, getMetaReducers} from './statemanagement/root-reducer';
 import {StoreDevtoolsModule} from '@ngrx/store-devtools';
 
 @NgModule({
@@ -17,12 +17,18 @@ import {StoreDevtoolsModule} from '@ngrx/store-devtools';
     BrowserModule,
     RouterModule.forRoot(routes),
     SwapiModule,
-    StoreModule.forRoot(rootReducer, {metaReducers}),
+    StoreModule.forRoot(reducerToken),
     StoreDevtoolsModule.instrument({
       maxAge: 25
     })
   ],
-  providers: [],
+  providers: [
+    reducerProvider,
+    {
+      provide: META_REDUCERS,
+      useFactory: getMetaReducers
+    }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
