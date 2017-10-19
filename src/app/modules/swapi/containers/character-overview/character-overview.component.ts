@@ -52,8 +52,8 @@ export class CharacterOverviewComponent implements OnInit {
       orderBy(characters, [sorting.columnName], [sorting.direction.toLowerCase()]) :
       characters;
 
-    this.sortedCharacters$ = this.store.select(state => state.data.characters)
-      .combineLatest(this.store.select(state => state.ui.overviewSorting), sortCharacters);
+    // this.sortedCharacters$; // TODO: select the characters and the sorting from the store
+    // and use the 'sortCharacters' function to do the sorting
   }
 
   removeCharacter(character) {

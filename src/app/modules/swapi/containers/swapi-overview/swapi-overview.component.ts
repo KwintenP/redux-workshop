@@ -31,7 +31,7 @@ import {LoadingDone, SetLoading} from '../../../../statemanagement/ui/loading';
   styleUrls: ['./swapi-overview.component.scss']
 })
 export class SwapiOverviewComponent implements OnInit {
-  loading$ = this.store.select(state => state.ui.loading);
+  loading$; //TODO select data from the store
   name$ = new Subject<string>();
   data$;
 
