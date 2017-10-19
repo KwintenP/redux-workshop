@@ -49,19 +49,5 @@ export type Actions = SetAllCharacters | RemoveCharacter | EditCharacter | Updat
 
 
 export function characterReducer(state: Array<StarWarsCharacter> = [], action: Actions) {
-  switch (action.type) {
-    case ActionTypes.SET_ALL_CHARACTERS:
-      return [...action.payload.characters];
-    case ActionTypes.REMOVE_CHARACTER:
-      return state.filter(character => action.payload.id !== character.id);
-    case ActionTypes.EDIT_CHARACTER:
-      return state.map(character => character.id === action.payload.id ? action.payload.character : character);
-    case ActionTypes.UPDATE_RATING:
-      return state.map(character => character.id === action.payload.id ?
-        {...character, rating: action.payload.rating} : character);
-    case ActionTypes.ADD_CHARACTER:
-      return [...state, action.payload.character];
-    default:
-      return state;
-  }
+
 }
