@@ -1,4 +1,6 @@
 import {LoadingDone, loadingReducer, SetLoading} from './loading';
+import * as deepFreeze from 'deep-freeze';
+import {init} from 'protractor/built/launcher';
 
 describe('reducer: loading reducer', () => {
   describe('case NGRX_INIT', () => {
@@ -14,6 +16,7 @@ describe('reducer: loading reducer', () => {
   describe('case UNKNOWN_STATE', () => {
     it('should return the current state', () => {
       const initialState = true;
+      deepFreeze(initialState);
 
       const result = loadingReducer(initialState, {type: 'UNKNOWN_STATE'} as any);
 
@@ -24,6 +27,7 @@ describe('reducer: loading reducer', () => {
   describe('case SET_LOADING', () => {
     it('should set the loading to true', () => {
       const initialState = false;
+      deepFreeze(initialState);
 
       const result = loadingReducer(initialState, new SetLoading());
 
@@ -34,6 +38,7 @@ describe('reducer: loading reducer', () => {
   describe('case LOADING_DONE', () => {
     it('should set the loading to false', () => {
       const initialState = true;
+      deepFreeze(initialState);
 
       const result = loadingReducer(initialState, new LoadingDone());
 

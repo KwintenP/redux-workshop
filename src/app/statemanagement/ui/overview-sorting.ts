@@ -13,7 +13,7 @@ export class SetSorting {
 
 type Actions = SetSorting;
 
-export function overviewSortingReducer(state: { columnName?: string, direction?: 'ASC' | 'DESC' }, action: Actions): { columnName?: string, direction?: 'ASC' | 'DESC' } {
+export function overviewSortingReducer(state: { columnName?: string, direction?: 'ASC' | 'DESC' } = {}, action: Actions): { columnName?: string, direction?: 'ASC' | 'DESC' } {
   switch (action.type) {
     case ActionTypes.SET_SORTING:
       if (state && state.columnName && state.columnName === action.payload.columnName) {
