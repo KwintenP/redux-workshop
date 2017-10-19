@@ -2,7 +2,6 @@ import {Component, OnInit} from '@angular/core';
 import {Router} from '@angular/router';
 import {error, success} from 'toastr';
 import {orderBy} from 'lodash-es';
-import {ApplicationState} from '../../../../statemanagement/root-reducer';
 import {Store} from '@ngrx/store';
 import {StarWarsBackendService} from '../../services/star-wars-backend.service';
 import {RemoveCharacter, UpdateRating} from '../../../../statemanagement/data/characters';
@@ -42,8 +41,7 @@ import {SetSorting} from '../../../../statemanagement/ui/overview-sorting';
 export class CharacterOverviewComponent implements OnInit {
   sortedCharacters$;
 
-  constructor(private store: Store<ApplicationState>,
-              private starWarsBackendService: StarWarsBackendService,
+  constructor(private starWarsBackendService: StarWarsBackendService,
               private router: Router) {
   }
 

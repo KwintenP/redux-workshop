@@ -4,7 +4,6 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {error, success} from 'toastr';
 import {StarWarsBackendService} from '../../services/star-wars-backend.service';
 import {EditCharacter} from '../../../../statemanagement/data/characters';
-import {ApplicationState} from '../../../../statemanagement/root-reducer';
 import {Store} from '@ngrx/store';
 
 @Component({
@@ -40,8 +39,7 @@ export class CharacterDetailComponent implements OnInit {
   constructor(private formBuilder: FormBuilder,
               private activatedRoute: ActivatedRoute,
               private starWarsBackendService: StarWarsBackendService,
-              private router: Router,
-              private store: Store<ApplicationState>) {
+              private router: Router) {
     this.characterForm = this.formBuilder.group({
       name: '',
       gender: '',

@@ -6,7 +6,6 @@ import {RouterModule} from '@angular/router';
 import {routes} from './app.routes';
 import {SwapiModule} from './modules/swapi/swapi.module';
 import {META_REDUCERS, StoreModule} from '@ngrx/store';
-import {reducerProvider, reducerToken} from './statemanagement/root-reducer';
 import {StoreDevtoolsModule} from '@ngrx/store-devtools';
 
 @NgModule({
@@ -17,13 +16,6 @@ import {StoreDevtoolsModule} from '@ngrx/store-devtools';
     BrowserModule,
     RouterModule.forRoot(routes),
     SwapiModule,
-    StoreModule.forRoot(reducerToken),
-    StoreDevtoolsModule.instrument({
-      maxAge: 25
-    })
-  ],
-  providers: [
-    reducerProvider,
   ],
   bootstrap: [AppComponent]
 })

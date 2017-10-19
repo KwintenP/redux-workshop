@@ -4,7 +4,6 @@ import {StarWarsCharacter} from '../../entities/star-wars-character.entity';
 import {BehaviorSubject} from 'rxjs/BehaviorSubject';
 import {Subject} from 'rxjs/Subject';
 import {error, success} from 'toastr';
-import {ApplicationState} from '../../../../statemanagement/root-reducer';
 import {Store} from '@ngrx/store';
 import {AddCharacter, SetAllCharacters} from '../../../../statemanagement/data/characters';
 import {StarWarsBackendService} from '../../services/star-wars-backend.service';
@@ -37,8 +36,7 @@ export class SwapiOverviewComponent implements OnInit {
 
   reset$ = new BehaviorSubject<Array<StarWarsCharacter>>([]);
 
-  constructor(private store: Store<ApplicationState>,
-              private starwarsService: StarWarsService,
+  constructor(private starwarsService: StarWarsService,
               private starwarsBackendService: StarWarsBackendService) {
   }
 
