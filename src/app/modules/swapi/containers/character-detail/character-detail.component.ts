@@ -59,7 +59,6 @@ export class CharacterDetailComponent implements OnInit {
   }
 
   saveCharacter() {
-    console.log('triggered');
     this.id$
       .take(1)
       .mergeMap(id => this.sandbox.editCharacter(id, this.characterForm.value))

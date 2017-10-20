@@ -44,7 +44,7 @@ export class SwapiOverviewComponent implements OnInit {
       .distinctUntilChanged()
       .filter(val => val.length > 1)
       .do(_ => this.sandbox.setLoading())
-      .switchMap(val => this.sandbox.getCharacters(1, val))
+      .mergeMap(val => this.sandbox.getCharacters(1, val))
       .do(_ => this.sandbox.loadingDone())
       .map(data => data.results)
       .merge(this.reset$);
