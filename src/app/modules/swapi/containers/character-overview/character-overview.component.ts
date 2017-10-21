@@ -62,7 +62,7 @@ export class CharacterOverviewComponent implements OnInit {
       .catch(_ => error('removing character failed'))
       .subscribe(_ => success('character removed'));
   }
-  
+
   rateUpdated(character, rating) {
     this.starWarsBackendService.editCharacter(character.id, {...character, rating})
       .map(_ => this.store.dispatch(new UpdateRating({id: character.id, rating})))

@@ -24,6 +24,10 @@ import {StoreDevtoolsModule} from '@ngrx/store-devtools';
   ],
   providers: [
     reducerProvider,
+    {
+      provide: META_REDUCERS,
+      useFactory: getMetaReducers
+    }
   ],
   bootstrap: [AppComponent]
 })
