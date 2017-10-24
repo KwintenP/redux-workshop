@@ -45,14 +45,6 @@ export class SwapiOverviewComponent implements OnInit {
     // debounce it for 200ms
     // filter out the same values, filter out values with length shorter than 2
     // fetch data and get the results
-    this.data$ = this.name$
-      .debounceTime(200)
-      .distinctUntilChanged()
-      .filter(val => val.length > 1)
-      // TODO: add loading icon
-      .switchMap(val => this.starwarsService.getCharacters(1, val))
-      // TODO: remove loading icon
-      .map(data => data.results);
 
     // TODO: (2)
     // When the data changes or an item is selected reset the data;
