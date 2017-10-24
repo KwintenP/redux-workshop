@@ -6,6 +6,7 @@ import {overviewSortingReducer} from './ui/overview-sorting';
 import {InjectionToken} from '@angular/core';
 import {environment} from '../../environments/environment';
 import {storeFreeze} from 'ngrx-store-freeze';
+import {reset} from './metareducers/reset.reducer';
 
 export type ApplicationState = Readonly<{
   data: {
@@ -41,7 +42,7 @@ export const reducerProvider = [
   {provide: reducerToken, useFactory: getReducers}
 ];
 
-export const metaReducers: MetaReducer<ApplicationState>[] = environment.production ? [reset] : [storeFreeze, reset];
+export const metaReducers: MetaReducer<ApplicationState>[] = environment.production ? [] : [storeFreeze];
 export function getMetaReducers(): MetaReducer<ApplicationState>[] {
   return metaReducers;
 }
