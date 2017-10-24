@@ -26,15 +26,15 @@ const uiReducers = combineReducers({
   overviewSorting: overviewSortingReducer
 });
 
-export const rootReducer: ActionReducerMap<ApplicationState> = {
-  data: dataReducers,
-  ui: uiReducers,
-};
+// export const rootReducer: ActionReducerMap<ApplicationState> = {
+//   data: dataReducers,
+//   ui: uiReducers,
+// };
 
-export function getReducers() {
-  return rootReducer;
-}
+// export function getReducers() {
+//   return rootReducer;
+// }
 
-export const reducerProvider = [
-  {provide: reducerToken, useFactory: getReducers}
-];
+// export const reducerProvider = [app
+//   {provide: reducerToken, useFactory: getReducers}
+// ];

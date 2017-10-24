@@ -12,7 +12,7 @@ import {SetAllCharacters} from './statemanagement/data/characters';
 export class AppComponent {
   title = 'app';
 
-  constructor(private store: Store<ApplicationState>,
+  constructor(
               private starwarsBackendService: StarWarsBackendService) {
     // Load all data at startup
     this.starwarsBackendService.getAllCharacters()

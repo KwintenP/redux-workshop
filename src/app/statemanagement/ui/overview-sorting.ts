@@ -14,5 +14,5 @@ export class SetSorting {
 type Actions = SetSorting;
 
 export function overviewSortingReducer(state: { columnName?: string, direction?: 'ASC' | 'DESC' } = {}, action: Actions): { columnName?: string, direction?: 'ASC' | 'DESC' } {
-
+return state;
 }

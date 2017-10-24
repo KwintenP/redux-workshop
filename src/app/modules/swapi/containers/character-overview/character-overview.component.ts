@@ -42,7 +42,7 @@ import {SetSorting} from '../../../../statemanagement/ui/overview-sorting';
 export class CharacterOverviewComponent implements OnInit {
   sortedCharacters$;
 
-  constructor(private store: Store<ApplicationState>,
+  constructor(
               private starWarsBackendService: StarWarsBackendService,
               private router: Router) {
   }

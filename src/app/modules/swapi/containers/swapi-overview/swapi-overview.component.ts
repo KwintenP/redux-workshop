@@ -35,7 +35,7 @@ export class SwapiOverviewComponent implements OnInit {
   name$ = new Subject<string>();
   data$;
 
-  constructor(private store: Store<ApplicationState>,
+  constructor(
               private starwarsService: StarWarsService,
               private starwarsBackendService: StarWarsBackendService) {
   }
@@ -45,6 +45,7 @@ export class SwapiOverviewComponent implements OnInit {
     // debounce it for 200ms
     // filter out the same values, filter out values with length shorter than 2
     // fetch data and get the results
+
 
     // TODO: (2)
     // When the data changes or an item is selected reset the data;
