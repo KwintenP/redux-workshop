@@ -38,6 +38,7 @@ describe('reducer: charactersReducer', () => {
   });
 
   describe('on ADD_CHARACTER', () => {
+    it('should add the character to the current list', () => {
     });
   });
 });
